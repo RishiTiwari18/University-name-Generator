@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const url = "https://universities.hipolabs.com/search?name=";
+    const url = "https://universities.hipolabs.com/search?country=";
     const btn = document.querySelector("#b");
     const input = document.querySelector("#country");
     const list = document.querySelector("#list");
