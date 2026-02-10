@@ -10,7 +10,7 @@ btn.addEventListener("click",async ()=>{
 function show(collegeArr){
     let list=document.querySelector("#list");
     list.innerText="";
-    for(col of collegeArr){
+    for( let col of collegeArr){
         console.log(col.name);
     let li = document.createElement("li");
     li.innerText=col.name;
@@ -20,7 +20,7 @@ function show(collegeArr){
 
 async function getcolleges(country){
     try{
-        let res = await axios.get(url+country);
+         let res = await axios.get(url + encodeURIComponent(country));
         return res.data;
 
     }catch(e){
