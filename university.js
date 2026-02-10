@@ -7,11 +7,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btn.addEventListener("click", async () => {
         const country = input.value.trim();
-        list.innerHTML = "Loading...";
+
+        if (country === "") {
+            list.innerHTML = "<li>Please enter a country name</li>";
+            return;
+        }
+
+        list.innerHTML = "<li>Loading...</li>";
 
         try {
-            const res = await fetch(url + encodeURIComponent(country));
-            const data = await res.json();
+            const response = await fetch(
+                url + encodeURIComponent(country)
+            );
+
+            // 🔴 check HTTP status
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const data = await response.json();
 
             list.innerHTML = "";
 
@@ -20,17 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            data.forEach(col => {
+            data.forEach(college => {
                 const li = document.createElement("li");
-                li.innerText = col.name;
+                li.innerText = college.name;
                 list.appendChild(li);
             });
 
         } catch (error) {
+            console.error("Fetch error:", error);
             list.innerHTML = "<li>Error loading data</li>";
-            console.error(error);
         }
     });
 
 });
-
