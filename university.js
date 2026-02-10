@@ -1,51 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    let url = "https://universities.hipolabs.com/search?name=";
-    let btn = document.querySelector("#b");
-
-    if (!btn) {
-        console.error("Button not found");
-        return;
-    }
+    const url = "https://universities.hipolabs.com/search?name=";
+    const btn = document.querySelector("#b");
+    const input = document.querySelector("#country");
+    const list = document.querySelector("#list");
 
     btn.addEventListener("click", async () => {
-        let country = document.querySelector("#country").value.trim();
+        const country = input.value.trim();
+        list.innerHTML = "Loading...";
 
-        if (country === "") {
-            alert("Please enter a country name");
-            return;
+        try {
+            const res = await fetch(url + encodeURIComponent(country));
+            const data = await res.json();
+
+            list.innerHTML = "";
+
+            if (data.length === 0) {
+                list.innerHTML = "<li>No universities found</li>";
+                return;
+            }
+
+            data.forEach(col => {
+                const li = document.createElement("li");
+                li.innerText = col.name;
+                list.appendChild(li);
+            });
+
+        } catch (error) {
+            list.innerHTML = "<li>Error loading data</li>";
+            console.error(error);
         }
-
-        let collegeArr = await getcolleges(country);
-        show(collegeArr);
     });
 
-    function show(collegeArr) {
-        let list = document.querySelector("#list");
-        list.innerHTML = "";
-
-        if (collegeArr.length === 0) {
-            list.innerText = "No universities found";
-            return;
-        }
-
-        for (let col of collegeArr) {
-            let li = document.createElement("li");
-            li.innerText = col.name;
-            list.appendChild(li);
-        }
-    }
-
-    async function getcolleges(country) {
-        try {
-            let res = await axios.get(
-                url + encodeURIComponent(country)
-            );
-            return res.data;
-        } catch (e) {
-            console.error("API error:", e);
-            return [];
-        }
-    }
-
 });
+
