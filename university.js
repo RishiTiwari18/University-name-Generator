@@ -1,4 +1,4 @@
-let url="http://universities.hipolabs.com/search?name=";
+let url="http://universities.hipolabs.com/search?country=";
 let btn=document.querySelector("button");
 btn.addEventListener("click",async ()=>{
     let country =document.querySelector("input").value;
